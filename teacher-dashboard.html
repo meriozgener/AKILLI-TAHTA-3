@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Öğretmen Paneli</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .student { background: #f2f2f2; padding: 8px; margin: 4px 0; border-radius: 4px; }
+    .empty { color: gray; }
+  </style>
+</head>
+<body>
+
+  <h2>📊 Öğretmen Paneli</h2>
+  <div id="classInfo"></div>
+
+  <h3>👨‍🎓 Katılan Öğrenciler</h3>
+  <div id="studentList"></div>
+
+  <button onclick="assignQuiz()">📘 Quiz Ata</button>
+
+  <script>
+    const classCode = localStorage.getItem('lastCreatedClass');
+    const classData = JSON.parse(localStorage.getItem(class-${classCode}));
+
+    const classInfoDiv = document.getElementById('classInfo');
+    const studentListDiv = document.getElementById('studentList');
+
+    if (!classData) {
+      classInfoDiv.innerHTML = "❌ Sınıf bilgisi bulunamadı.";
+    } else {
+      classInfoDiv.innerHTML = `
+        <p><strong>Sınıf Adı:</strong> ${classData.className}</p>
+        <p><strong>Sınıf Kodu:</strong> ${classData.classCode}</p>
+      `;
+
+      if (classData.students.length === 0) {
+        studentListDiv.innerHTML = "<p class='empty'>Henüz öğrenci katılmadı.</p>";
+      } else {
+        classData.students.forEach(name => {
+          const p = document.createElement('p');
+          p.className = 'student';
+          p.innerText = name;
+          studentListDiv.appendChild(p);
+        });
+      }
+    }
+
+    function assignQuiz() {
+      // Gelecekte quiz atama için bu fonksiyonu kullanacağız
+      alert("Bu özellik yakında aktif olacak!");
+      // window.location.href = 'quiz-turkce-1.html';
+    }
+  </script>
+
+</body>
+</html>
