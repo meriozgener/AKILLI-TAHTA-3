@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Türkçe Quiz 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f1f1;
+      padding: 20px;
+    }
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #e0e0e0;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .answers button.correct {
+      background: #a5d6a7;
+    }
+    .answers button.wrong {
+      background: #ef9a9a;
+    }
+    .result {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Türkçe Quiz 1</h2>
+    <div id="quiz"></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Aşağıdaki cümlelerin hangisinde mecaz anlam vardır?",
+        answers: ["Kalem çantanın içindeydi.", "Adam sert kayaya çarptı.", "Yemek saat sekizdeydi.", "Kitaplık duvara monte edilmişti."],
+        correct: 1
+      },
+      {
+        question: "Aşağıdaki sözcüklerden hangisi somut anlamlıdır?",
+        answers: ["Özgürlük", "Acı", "Kalem", "Özlem"],
+        correct: 2
+      },
+      {
+        question: "Aşağıdaki deyimlerden hangisi mecaz anlam içerir?",
+        answers: ["Eli ayağına dolaşmak", "Elini uzatmak", "Kapıyı kapatmak", "Suyunu içmek"],
+        correct: 0
+      },
+      {
+        question: "Aşağıdaki cümlelerin hangisinde soyut bir kavram kullanılmıştır?",
+        answers: ["Cam kırıldı.", "Kalbim kırıldı.", "Top yere düştü.", "Koltuk yırtıldı."],
+        correct: 1
+      },
+      {
+        question: "Aşağıdaki sözcüklerden hangisi mecaz anlamda kullanılmıştır?",
+        answers: ["Duvar", "Kalem", "Yürek", "Koltuk"],
+        correct: 2
+      }
+    ];
+
+    let currentQuestion = 0;
+    let correctAnswers = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      const container = document.getElementById("quiz");
+      container.innerHTML = `
+        <div class="question"><strong>${currentQuestion + 1}.</strong> ${q.question}</div>
+        <div class="answers">
+          ${q.answers.map((ans, i) => `<button onclick="checkAnswer(${i}, this)">${ans}</button>`).join('')}
+        </div>
+      `;
+    }
+
+    function checkAnswer(selected, button) {
+      const correct = questions[currentQuestion].correct;
+      const buttons = document.querySelectorAll(".answers button");
+      buttons.forEach((btn, index) => {
+        btn.disabled = true;
+        if (index === correct) btn.classList.add("correct");
+        if (index === selected && index !== correct) btn.classList.add("wrong");
+      });
+      if (selected === correct) correctAnswers++;
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function showResult() {
+      const container = document.getElementById("quiz");
+      const result = document.getElementById("result");
+      const total = questions.length;
+      const score = correctAnswers * 20;
+      localStorage.setItem("quiz_turkce_1_score", score);
+      container.innerHTML = "";
+      result.style.display = "block";
+      result.innerHTML = `
+        <h3>Quiz Tamamlandı!</h3>
+        <p>Doğru: ${correctAnswers} / ${total}</p>
+        <p>Puanın: ${score}</p>
+      `;
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
