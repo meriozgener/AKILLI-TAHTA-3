@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sınıf Oluştur - Öğretmen</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { padding: 10px; margin: 10px 0; width: 300px; }
+    button { padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h2>📘 Sınıf Oluştur</h2>
+  <label>Sınıf Adı:</label><br>
+  <input type="text" id="className" placeholder="Örn: 11B Türkçe"><br>
+  <button onclick="createClass()">Sınıfı Oluştur</button>
+
+  <p id="result" style="margin-top: 20px;"></p>
+
+  <script>
+    function generateClassCode() {
+      return Math.random().toString(36).substr(2, 6).toUpperCase(); // Örn: X5K9AF
+    }
+
+    function createClass() {
+      const name = document.getElementById('className').value.trim();
+      if (!name) return alert("Lütfen sınıf adı giriniz.");
+
+      const code = generateClassCode();
+      const classData = {
+        className: name,
+        classCode: code,
+        students: [],
+        quizzes: []
+      };
+
+      localStorage.setItem(class-${code}, JSON.stringify(classData));
+      localStorage.setItem('lastCreatedClass', code); // Öğretmenin paneline yönlendirmek için
+
+      document.getElementById('result').innerHTML = `
+        ✅ Sınıf oluşturuldu!<br>
+        🔐 Sınıf Kodu: <strong>${code}</strong><br>
+        <button onclick="goToDashboard()">Sınıf Paneline Git</button>
+      `;
+    }
+
+    function goToDashboard() {
+      window.location.href = "teacher-dashboard.html"; // İstersen .js ile classCode da taşı
+    }
+  </script>
+</body>
+</html>
